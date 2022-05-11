@@ -17,6 +17,8 @@ const AuthentificationError = require('../errors/error_Authentification_401');
 
 const ConflictError = require('../errors/error_ConflictError_409');
 
+const { JWT_SECRET, NODE_ENV } = process.env;
+
 // Получаем всех пользователей
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -134,7 +136,8 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       // const token = jwt.sign({ _id: user._id },
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      // const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, `${NODE_ENV === 'production' ? JWT_SECRET : 'eb28135ebcfc17578f96d4d65b6c7871f2c803be4180c165061d5c2db621c51b'}`, { expiresIn: '7d' });
       console.log(token);
       return res.status(200).send({ token }); // возвращаем токен в теле ответа
     })
