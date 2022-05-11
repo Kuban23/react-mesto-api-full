@@ -1,0 +1,32 @@
+.popup__group {
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+}
+
+
+/* @media screen and (min-width: 600px) and (max-width:815px) {
+  .popup__group {
+    width: 480px;
+    height: 262px;
+
+  }
+}
+
+@media screen and (min-width: 816px) and (max-width: 923px) {
+  .popup__group {
+    width: 580px;
+    height: 362px;
+  }
+} */
+
+
+
+/* @media screen and (min-width: 650px) and (max-width: 923px) {
+  .popup__group {
+    width: 580px;
+
+  }
+} */

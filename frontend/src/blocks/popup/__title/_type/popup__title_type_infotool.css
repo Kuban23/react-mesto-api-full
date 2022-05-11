@@ -1,0 +1,9 @@
+.popup__title_type_infotool{
+	font-weight: 900;
+	font-size: 24px;
+	line-height: 29px;
+	text-align: center;
+	color: #000000;
+	padding: 32px 36px 0px 36px;
+   margin: 0px;
+}

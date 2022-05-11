@@ -1,0 +1,20 @@
+.photo__trash {
+	width: 18px;
+	height: 19px;
+	background-image: url("../../../image/Trash.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+	background-size: cover;
+	border: none;
+	position: absolute;
+  top: 20px;
+  right: 20px;
+	transition: opacity 0.5s ease-in-out;
+  cursor: pointer;
+	background-color: rgba(255,255,255,0);
+  visibility: hidden;
+}
+
+.photo__trash:hover {
+	opacity: 0.5;
+}

@@ -1,3 +1,4 @@
+require('dotenv').config();
 // Подключаем express
 const express = require('express');
 const mongoose = require('mongoose');
@@ -11,6 +12,8 @@ const ERROR_NOT_FOUND = require('./errors/error_not_found_404');
 // Подключаем контроллеры
 const { login, createUser } = require('./controllers/users');
 
+const cors = require('./middlewares/cors');
+
 // Создаем приложение
 const app = express();
 
@@ -19,6 +22,14 @@ app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
 app.use(requestLogger);
+
+app.use(cors);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 // Подключаем роуты
 const usersRoute = require('./routes/users');
