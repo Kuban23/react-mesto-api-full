@@ -1,5 +1,6 @@
 
-export const BASE_URL = 'https://auth.nomoreparties.co';
+// export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://react-mesto-api-full.nomoredomains.work';
 
 // Проверка-обработка ответа
 const checkResponse = (res) => {
@@ -40,13 +41,13 @@ export const authorize = (email, password) => {
 
 // Функция для проверки валидности токена
 export const checkToken = (token) => {
-	return fetch(`${BASE_URL}/users/me`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
-		}
+   return fetch(`${BASE_URL}/users/me`, {
+      method: 'GET',
+      headers: {
+         'Content-Type': 'application/json',
+         'Authorization': `Bearer ${token}`
+      }
 
-	})
-		.then(checkResponse)
+   })
+      .then(checkResponse)
 }

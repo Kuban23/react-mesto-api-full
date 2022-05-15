@@ -1,11 +1,15 @@
 class Api {
-   constructor({ address, token }) {
+   // constructor({ address, token }) {
+   //    this._address = address;
+   //    this._token = token;
+   //    this._headers = {
+   //       authorization: this._token,
+   //       'Content-Type': 'application/json',
+   //    };
+   // }
+   constructor({ address, headers }) {
       this._address = address;
-      this._token = token;
-      this._headers = {
-         authorization: this._token,
-         'Content-Type': 'application/json',
-      };
+      this._headers = headers;
    }
 
    // Проверка ответа
@@ -87,7 +91,7 @@ class Api {
    //   }
 
    // Обновление аватарки
-   redactAvatar({avatar}) {
+   redactAvatar({ avatar }) {
       return fetch(`${this._address}/users/me/avatar`, {
          method: 'PATCH',
          headers: this._headers,
@@ -109,9 +113,15 @@ class Api {
 
 }
 
+// const api = new Api({
+//    address: 'https://mesto.nomoreparties.co/v1/cohort-34',
+//    token: '3e73d708-abda-497f-b5cd-226c9c586d8e',
+// });
 const api = new Api({
-   address: 'https://mesto.nomoreparties.co/v1/cohort-34',
-   token: '3e73d708-abda-497f-b5cd-226c9c586d8e',
+   baseUrl: 'https://react-mesto-api-full.nomoredomains.work',
+   headers: {
+      'Content-Type': 'application/json'
+   }
 });
 
 

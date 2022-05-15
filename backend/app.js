@@ -21,9 +21,9 @@ const app = express();
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
-app.use(requestLogger);
-
 app.use(cors);
+
+app.use(requestLogger);
 
 app.get('/crash-test', () => {
   setTimeout(() => {

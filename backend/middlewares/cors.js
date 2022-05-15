@@ -1,6 +1,11 @@
+// const allowedCors = [
+//   'http://react-mesto-api-full.nomoredomains.work',
+//   'https://react-mesto-api-full.nomoredomains.work',
+//   'http://localhost:3000',
+// ];
 const allowedCors = [
-  'http://react-mesto-api-full.nomoredomains.work',
-  'https://react-mesto-api-full.nomoredomains.work',
+  'http://frontend-react-mesto.nomoredomains.xyz',
+  'https://frontend-react-mesto.nomoredomains.xyz',
   'http://localhost:3000',
 ];
 

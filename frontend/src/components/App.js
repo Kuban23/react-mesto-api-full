@@ -202,8 +202,8 @@ function App() {
    //  Функция регистрации пользователя
    function hendleRegister(email, password) {
       auth.register(email, password)
-         .then((data) => { // получаем попап для подтверждения или отклонения регистрации, узнаем, есть ли в присланных данных email
-            if (data) {
+         .then((res) => { // получаем попап для подтверждения или отклонения регистрации, узнаем, есть ли в присланных данных email
+            if (res) {
                setInfoTooltip(true); // прописываем стэйты попапа
                setIsRegister(true);
             }
@@ -219,12 +219,12 @@ function App() {
    // Функция для залогивания пользователя
    function handleLogin(email, password) {
       auth.authorize(email, password)
-         .then((data) => {
-            if (data.token) { // проверяем есть ли присланных данных Токен
+         .then((res) => {
+            if (res) { // проверяем есть ли присланных данных Токен
                setloggedIn(true);
                setEmail(email);
                history.push('/')
-               localStorage.setItem('jwt', data.token);
+               localStorage.setItem('jwt', res.token);
             }
             // history.push('/')
          })
