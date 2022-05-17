@@ -182,7 +182,7 @@ function App() {
    React.useEffect(() => {
 
       function handleEscClosePopup(evt) {
-         evt.key == 'Escape' && closeAllPopup();
+         evt.key === 'Escape' && closeAllPopup();
       }
 
       function handleOverlayClosePopup(evt) {
@@ -247,8 +247,8 @@ function App() {
       if (jwt) { // Если токен есть, то залогиниваемся
          auth.checkToken(jwt)
             .then((res) => {
-               if (res.data.email) {
-                  setEmail(res.data.email);
+               if (res.email) {
+                  setEmail(res.email);
                }
                setloggedIn(true);
                history.push('/')

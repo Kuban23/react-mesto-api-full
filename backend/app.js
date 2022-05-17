@@ -14,23 +14,6 @@ const { login, createUser } = require('./controllers/users');
 
 const cors = require('./middlewares/cors');
 
-// Создаем приложение
-const app = express();
-
-// Выбирваем методы для работы спакетами
-app.use(bodyParser.json()); // для собирания JSON-формата
-app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
-
-app.use(cors);
-
-app.use(requestLogger);
-
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
-
 // Подключаем роуты
 const usersRoute = require('./routes/users');
 const cardsRoute = require('./routes/cards');
@@ -38,11 +21,28 @@ const cardsRoute = require('./routes/cards');
 // Настраиваем и слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
+// Создаем приложение
+const app = express();
+
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+// Выбирваем методы для работы спакетами
+app.use(bodyParser.json()); // для собирания JSON-формата
+app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
+
+app.use(cors);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+app.use(requestLogger);
 
 // Маршруты для регистрации и авторизации
 // Валидация приходящих на сервер данных
