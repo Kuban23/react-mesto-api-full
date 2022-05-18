@@ -49,31 +49,35 @@ function App() {
    // Переменная для работы с useHistory
    const history = useHistory();
 
-   // Эффект который будет вызывать getProfileUserInfo() и getLoadCards(), обновлять стейт переменную 
-   // из полученного значения и загрузку карточек с сервера. 
+   // Добавил состояние проверки авторизации пользователя, (без этого у меня не полчилось вывести карточки)
+   const [isUserlogin, setIsUserLogin] = React.useState(false)
+
+   //При монтировании компоненты проверяем есть ли токен в хранилище 
+
    React.useEffect(() => {
-      if (loggedIn) { // Делаю проверку залогинился ли пользователь (не понял как реализовать проверку с currentUser)
-         Promise.all([ // в Promise.all передаем массив промисов которые нужно выполнить
+      checkTokenlocalStorage();
+   }, [])
+
+
+   // Эффект который будет вызывать getProfileUserInfo() и getLoadCards(), 
+   // Делаем запрос на сервер для получения новых данных    
+   React.useEffect(() => {
+      if (isUserlogin) {
+         Promise.all([ // в Promise.all передаем массив промисов которые нужно выполнить, запрос на сервер
             api.getProfileUserInfo(),
             api.getLoadCards()
          ])
-            .then(([userData, cardsData]) => {
-               setCurrentUser(userData)
-               setCards(cardsData)
-               closeAllPopup()
+            .then(([userData, cardsData]) => {// Если промис отработал, то далее устанавливаются данные пользователя и карточек
+               setCurrentUser(userData.data)
+               setCards(cardsData.data.reverse())
+
             })
             .catch((error) => {
                console.log(error);
             })
       }
 
-   }, [loggedIn]);
-
-   //Проверяем есть ли токен в хранилище (делаем 1 раз при монтировании компоненты, 
-   // + мы устраняем выход с профиля при перезагрузке страницы)
-   React.useEffect(() => {
-      checkTokenlocalStorage();
-   }, [])
+   }, [isUserlogin]);
 
    // Обработчики для переменных состояния, стэйтовые переменные.
    function handleEditAvatarClick() {
@@ -203,7 +207,7 @@ function App() {
    function hendleRegister(email, password) {
       auth.register(email, password)
          .then((res) => { // получаем попап для подтверждения или отклонения регистрации, узнаем, есть ли в присланных данных email
-            if (res) {
+            if (res.data.email) {
                setInfoTooltip(true); // прописываем стэйты попапа
                setIsRegister(true);
             }
@@ -220,18 +224,19 @@ function App() {
    function handleLogin(email, password) {
       auth.authorize(email, password)
          .then((res) => {
-            if (res) { // проверяем есть ли присланных данных Токен
+            if (res.token) { // проверяем есть ли присланных данных Токен
+               localStorage.setItem('jwt', res.token);
                setloggedIn(true);
                setEmail(email);
                history.push('/')
-               localStorage.setItem('jwt', res.token);
+               setIsUserLogin(true);
             }
             // history.push('/')
          })
          .catch((error) => {
             console.log(error);
-            setIsRegister(false);
-            setInfoTooltip(true);
+            // setIsRegister(false);
+            // setInfoTooltip(true);
          });
    }
 
@@ -247,11 +252,14 @@ function App() {
       if (jwt) { // Если токен есть, то залогиниваемся
          auth.checkToken(jwt)
             .then((res) => {
-               if (res.email) {
-                  setEmail(res.email);
+               if (res.data.email) {
+                  setEmail(res.data.email);
+                  setloggedIn(true);
+                  setIsUserLogin(true);
+                  history.push('/')
                }
-               setloggedIn(true);
-               history.push('/')
+               // setloggedIn(true);
+               // history.push('/')
 
             })
             .catch((error) => {
