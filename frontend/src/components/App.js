@@ -70,7 +70,6 @@ function App() {
             .then(([userData, cardsData]) => {// Если промис отработал, то далее устанавливаются данные пользователя и карточек
                setCurrentUser(userData.data)
                setCards(cardsData.data.reverse())
-
             })
             .catch((error) => {
                console.log(error);
@@ -119,10 +118,10 @@ function App() {
    }
 
    // Обработчик для изменения профайла 
-   function handleUpdateUser(data) {
-      api.redactProfile(data)
+   function handleUpdateUser(userName, userAbout) {
+      api.redactProfile(userName, userAbout)
          .then((currentUserData) => {
-            setCurrentUser(currentUserData)
+            setCurrentUser(currentUserData.data)
             closeAllPopup()
          })
          .catch((error) => {
@@ -131,10 +130,10 @@ function App() {
    }
 
    // Обработчик для изменения аватара
-   function handleUpdateAvatar({ avatar }) {
-      api.redactAvatar({ avatar })
+   function handleUpdateAvatar(avatar) {
+      api.redactAvatar(avatar)
          .then((currentUserData) => {
-            setCurrentUser(currentUserData)
+            setCurrentUser(currentUserData.data)
             closeAllPopup()
          })
          .catch((error) => {
@@ -145,12 +144,11 @@ function App() {
    // Реализация постновки и удаления лайков
    function handleCardLike(card) {
       // Снова проверяем, есть ли уже лайк на этой карточке
-      const isLiked = card.likes.some(i => i._id === currentUser._id);
-
+      const isLiked = card.likes.some(i => i === currentUser._id);
       // Отправляем запрос в API и получаем обновлённые данные карточки
       api.changeLikeCardStatus(card._id, !isLiked)
          .then((newCard) => {
-            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+            setCards((state) => state.map((c) => c._id === card._id ? newCard.data : c));
          })
          .catch((error) => {
             console.log(error);
@@ -174,7 +172,7 @@ function App() {
    function handleAddPlaceSubmit(data) {
       api.addCard(data)
          .then((newCard) => {
-            setCards([newCard, ...cards])
+            setCards([newCard.data, ...cards])
             closeAllPopup()
          })
          .catch((error) => {
@@ -207,11 +205,12 @@ function App() {
    function hendleRegister(email, password) {
       auth.register(email, password)
          .then((res) => { // получаем попап для подтверждения или отклонения регистрации, узнаем, есть ли в присланных данных email
-            if (res.data.email) {
+            if (res) {
                setInfoTooltip(true); // прописываем стэйты попапа
                setIsRegister(true);
+               history.push('/sign-in')  // переходим на страницу входа
             }
-            history.push('/sign-in')  // переходим на страницу входа
+            // history.push('/sign-in')  // переходим на страницу входа
          })
          .catch((error) => {
             console.log(error);
@@ -235,8 +234,8 @@ function App() {
          })
          .catch((error) => {
             console.log(error);
-            // setIsRegister(false);
-            // setInfoTooltip(true);
+            setIsRegister(false);
+            setInfoTooltip(true);
          });
    }
 
