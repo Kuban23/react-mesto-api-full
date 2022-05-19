@@ -7,6 +7,6 @@
 
 ### Ссылки:
 ----------------
-[Фронтенд](frontend-react-mesto.nomoredomains.xyz)
-[Бэкенд](react-mesto-api-full.nomoredomains.work)
+* Фронтенд: frontend-react-mesto.nomoredomains.xyz
+* Бэкенд: react-mesto-api-full.nomoredomains.work
 
