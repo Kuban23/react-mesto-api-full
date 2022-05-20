@@ -78,11 +78,12 @@ app.use(auth);
 app.use(usersRoute);
 app.use(cardsRoute);
 
-app.use(errorLogger);
-
 app.use('*', auth, (req, res, next) => {
   next(new ERROR_NOT_FOUND('Запрашиваемая страница не найдена'));
 });
+
+// Логгер ошибок
+app.use(errorLogger);
 
 // Создал обработчик ошибок для celebrate
 app.use(errors());
